@@ -1,10 +1,10 @@
 // Dependencies
 var nconf   = require('nconf'),
-    gith    = require('gith').create(nconf.get('port')),
+    gith    = require('gith'),
     gitpull = require('gitpull'),
     fs      = require('fs'),
     Log     = require('log'),
-    log, pull;
+    log, pull, server;
 
 // Read configurations in order
 //  1. Command-Line
@@ -30,7 +30,9 @@ pull = function (payload, cb) {
 };
 
 // Githook server that will listen on the specified port
-gith({
+server = gith.create(nconf.get('port'));
+
+server({
     repo: nconf.get('repository'),
     branch: nconf.get('branch')
 }).on('all', pull).on('error', function (err) { log.error(err); });
