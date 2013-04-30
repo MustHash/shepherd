@@ -27,6 +27,9 @@ pull = function (payload, cb) {
             var post = require(nconf.get('post-script'));
             if (typeof post === 'function') { post(payload); }
         }
+    }).on('error', function (err) {
+        log.error('Error during git pull:', err);
+        throw err;
     });
 };
 
