@@ -39,4 +39,4 @@ server({
 }).on('all', pull).on('error', function (err) { log.error(err); });
 
 // Notify
-log.debug('Started shepherd server.', fs.readFileSync('config.js'));
+log.debug('Started shepherd server.', fs.readFileSync('config.json'));
