@@ -21,14 +21,14 @@ log = new Log('debug', fs.createWriteStream(nconf.get('log')));
 pull = function (payload, cb) {
     log.debug('Going to pull.');
     gitpull(nconf.get('repository-folder')).on('end', function () {
-        log.info('Git pull: ', nconf.get('repository-folder'), ' => ', JSON.stringify(payload));
+        log.info('Git pulled completed: ' + nconf.get('repository-folder') + ' => ', JSON.stringify(payload));
         if (cb && typeof cb === 'function') { cb(); }
         if (nconf.get('post-script')) {
             var post = require(nconf.get('post-script'));
             if (typeof post === 'function') { post(payload); }
         }
     }).on('error', function (err) {
-        log.error('Error during git pull:', err);
+        log.error('Error during git pull:' + err);
         throw err;
     });
 };
