@@ -4,7 +4,7 @@
   "description": "Automatically deploys a GitHub repository to a given folder.",
   "main": "index.js",
   "scripts": {
-    "start": "forever server.js"
+    "start": "forever start server.js"
   },
   "repository": {
     "type": "git",
