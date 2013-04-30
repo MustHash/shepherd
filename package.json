@@ -4,7 +4,7 @@
   "description": "Automatically deploys a GitHub repository to a given folder.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --ui exports --reporter tap"
+    "start": "forever server.js"
   },
   "repository": {
     "type": "git",
@@ -20,10 +20,10 @@
   "license": "MIT",
   "dependencies": {
     "gitpull": "0.0.2",
-    "commander": "~1.1.1",
     "nconf": "~0.6.7",
     "gith": "~1.0.4",
-    "forever-monitor": "~1.2.1"
+    "log": "git://github.com/Couto/log.js.git",
+    "forever": "~0.10.7"
   },
   "devDependencies": {
     "mocha": "~1.9.0"

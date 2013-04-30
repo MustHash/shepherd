@@ -1,0 +1,7 @@
+{
+    "log": "../logs/shepherd.log",
+    "repository": "musthash/fuckyourcode.com",
+    "branch": "master",
+    "repository-folder": "../public",
+    "port": 3001
+}
