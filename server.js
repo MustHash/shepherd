@@ -28,8 +28,7 @@ pull = function (payload, cb) {
             if (typeof post === 'function') { post(payload); }
         }
     }).on('error', function (err) {
-        log.error('Error during git pull:' + err);
-        throw err;
+        log.error('Error during git pull:' + err.message);
     });
 };
 
