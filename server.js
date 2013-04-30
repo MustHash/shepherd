@@ -22,6 +22,10 @@ pull = function (payload, cb) {
     gitpull(nconf.get('repository-folder')).on('end', function () {
         log.info('pulled: ', JSON.stringify(payload));
         if (cb && typeof cb === 'function') { cb(); }
+        if (nconf.get('post-script')) {
+            var post = require(nconf.get('post-script'));
+            if (typeof post === 'function') { post(payload); }
+        }
     });
 };
 

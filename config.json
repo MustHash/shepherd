@@ -3,5 +3,6 @@
     "repository": "musthash/fuckyourcode.com",
     "branch": "master",
     "repository-folder": "../public",
-    "port": 3001
+    "port": 3001,
+    "post-script": ""
 }
