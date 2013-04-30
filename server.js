@@ -19,8 +19,9 @@ log = new Log('debug', fs.createWriteStream(nconf.get('log')));
 
 // Function that will make the `git pull`
 pull = function (payload, cb) {
+    log.debug('Going to pull.');
     gitpull(nconf.get('repository-folder')).on('end', function () {
-        log.info('pulled: ', JSON.stringify(payload));
+        log.info('Git pull: ', nconf.get('repository-folder'), ' => ', JSON.stringify(payload));
         if (cb && typeof cb === 'function') { cb(); }
         if (nconf.get('post-script')) {
             var post = require(nconf.get('post-script'));
@@ -36,3 +37,6 @@ server({
     repo: nconf.get('repository'),
     branch: nconf.get('branch')
 }).on('all', pull).on('error', function (err) { log.error(err); });
+
+// Notify
+log.debug('Started shepherd server.', fs.readFileSync('config.js'));
