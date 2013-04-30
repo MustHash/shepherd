@@ -6,7 +6,7 @@ shepherd
 ## Instructions
 
 ```
-$ git clone https://github.com/musthash/shepherd.git
+$ git clone https://github.com/MustHash/shepherd.git
 $ cd shepherd
 $ npm install
 ```
@@ -22,7 +22,7 @@ $ npm start
 ```
 {
     "log": "../logs/shepherd.log",
-    "repository": "musthash/fuckyourcode.com",
+    "repository": "MustHash/fuckyourcode.com",
     "branch": "master",
     "repository-folder": "../public",
     "port": 3001,
@@ -63,3 +63,8 @@ npm start
 ```
 
 Notice that in the `config.json` file the repository folder should match the `/var/www/fuckyourcode.com`
+
+## Issues
+
+If the `git pull` command keeps asking you for a password, [create a ssh keys-pair](https://help.github.com/articles/generating-ssh-keys) without passphrase
+and add the key to the `Deploy key` in the repository settings (https://github.com/{Username}/{repository}/settings/keys).
