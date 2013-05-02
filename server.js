@@ -1,44 +1,21 @@
 // Dependencies
 var nconf   = require('nconf'),
-    gith    = require('gith'),
-    gitpull = require('gitpull'),
-    fs      = require('fs'),
-    Log     = require('log'),
-    log, pull, server;
+    request = require('request'),
+    server  = require('./src/server.js');
 
-// Read configurations in order
-//  1. Command-Line
-//  2. Enviromental variable
-//  3. A configuration file
+// Read all config options
 nconf.argv()
     .env()
     .file({ file: 'config.json' });
 
-// Create a logger that will write on the specified file
-log = new Log('debug', fs.createWriteStream(nconf.get('log')));
+// GithHub may change their hooks IP range so we need to fetch it first
+console.log('Requesting GitHub hooks');
+request({
+    url : 'https://api.github.com/meta',
+    headers: { 'User-Agent': 'shepherd/0.0.1 (dev)' }
+}, function (error, response, body) {
+    if (error) { throw error; }
+    console.log('Successfully obtained GitHub hooks');
+    server({ whitelist: JSON.parse(body).hooks }).listen(3000);
+});
 
-// Function that will make the `git pull`
-pull = function (payload, cb) {
-    log.debug('Going to pull.');
-    gitpull(nconf.get('repository-folder')).on('end', function () {
-        log.info('Git pulled completed: ' + nconf.get('repository-folder') + ' => ', JSON.stringify(payload));
-        if (cb && typeof cb === 'function') { cb(); }
-        if (nconf.get('post-script')) {
-            var post = require(nconf.get('post-script'));
-            if (typeof post === 'function') { post(payload); }
-        }
-    }).on('error', function (err) {
-        log.error('Error during git pull:' + err.message);
-    });
-};
-
-// Githook server that will listen on the specified port
-server = gith.create(nconf.get('port'));
-
-server({
-    repo: nconf.get('repository'),
-    branch: nconf.get('branch')
-}).on('all', pull).on('error', function (err) { log.error(err); });
-
-// Notify
-log.debug('Started shepherd server.', fs.readFileSync('config.json'));
