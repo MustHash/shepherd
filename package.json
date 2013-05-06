@@ -27,7 +27,8 @@
     "forever": "~0.10.7",
     "connect": "~2.7.7",
     "mocha": "~1.9.0",
-    "request": "~2.21.0"
+    "request": "~2.21.0",
+    "connect-purgatory": "0.0.1"
   },
   "devDependencies": {
     "mocha": "~1.9.0"

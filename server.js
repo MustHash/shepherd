@@ -16,6 +16,6 @@ request({
 }, function (error, response, body) {
     if (error) { throw error; }
     console.log('Successfully obtained GitHub hooks');
-    server({ whitelist: JSON.parse(body).hooks }).listen(3000);
+    server({ whitelist: /*JSON.parse(body).hooks*/['127.0.0.1/32'] }).listen(3000);
 });
 
