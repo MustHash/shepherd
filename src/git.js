@@ -1,4 +1,7 @@
-var request = require('request');
+var request = require('request'),
+    cp      = require('child_process'),
+    spawn   = cp.spawn;
+
 
 function Git() {}
 
@@ -6,7 +9,24 @@ Git.prototype = {
 
     constructor: Git,
 
-    pull: function () {}
+    cwd: function (cwd) {
+        this.cwd = cwd;
+        return this;
+    },
+
+    pull: function (cb) {
+        var pull = spawn('git', ['pull'], { cwd: this.cwd }),
+            error = '';
+
+        pull.stderr.on('data', function (err) { error += err.toString(); });
+        pull.stdout.on('data', function (data) { console.log('git pull data', data.toString()); });
+        pull.on('close', function (code) {
+            if (!error.length) { error = null; }
+            if (cb && typeof cb === 'function') { cb(error, code); }
+        });
+
+        return this;
+    }
 
 };
 

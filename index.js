@@ -13,6 +13,8 @@ nconf.argv()
     .env()
     .file({ file: 'config.json' })
     .defaults({
+        environment: process.env.NODE_ENV,
+        timeout: 3000,
         log: 'shepherd.log',
         port: 3000,
         whitelist: 'GitHub',
@@ -20,7 +22,7 @@ nconf.argv()
     });
 
 // Either set log to output to stdout or to a log file
-log = (process.env.NODE_ENV === 'development') ?
+log = (nconf.get('environment') === 'development') ?
         new Log('debug') :
         new Log('notice', (function () {
             // create the file if it doesn't exist
@@ -31,10 +33,13 @@ log = (process.env.NODE_ENV === 'development') ?
 function init() {
     log.notice('Starting shepherd server on port: %s', nconf.get('port'));
     server({
+        environment: nconf.get('environment'),
         whitelist: nconf.get('whitelist'),
         methods: nconf.get('methods'),
-        logger: log.stream
+        logger: log.stream,
+        'repository-folder': nconf.get('repository-folder')
     }).listen(nconf.get('port'));
+
 }
 
 // If the user specified that he wanted to use the GitHub hooks

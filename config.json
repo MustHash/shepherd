@@ -2,7 +2,7 @@
     "log": "test-logs/shepherd.log",
     "repository": "musthash/fuckyourcode.com",
     "branch": "master",
-    "repository-folder": "../public",
+    "repository-folder": "./test-rep",
     "port": 3001,
     "post-script": ""
 }
