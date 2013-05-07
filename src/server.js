@@ -6,26 +6,34 @@ var http = require('http'),
 
 middleware.payload = function () {};
 
+middleware.methodFilter = function (methods) {
+    methods = [].concat(methods).map(function (method) {
+        return method.toUpperCase();
+    });
+
+    return function (req, resp, next) {
+        if (methods.indexOf(req.method) === -1) {
+            resp.statusCode = 403;
+            next('ERROR!')
+        } else { next(); }
+    };
+};
+
+// Set 'server' name
+connect.errorHandler.title = 'Shepherd';
 
 module.exports = function (opts) {
 
-    var connec = connect()
-        .use(connect.logger())
-        .use(connect.bodyParser())
-        .use(connect.errorHandler())
+    var app = connect()
+        .use(connect.logger({ stream: opts.logger }))
         .use(purgatory(opts.whitelist).bless())
+        .use(middleware.methodFilter(opts.methods || 'POST'))
+        .use(connect.bodyParser())
         .use(function (req, resp, next) {
-            req.emit('filed');
+            console.log('wtf=>', exports.title)
             next();
-        });
+        })
+        .use(connect.errorHandler({showStack: true}));
 
-    var server = http.createServer(connec);
-
-    server.on('filed', function (req, resp) {
-        console.log(req, resp);
-        this.emit('files!!!!!1')
-    });
-
-    return server;
+    return http.createServer(app);
 };
-

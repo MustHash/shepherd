@@ -1,5 +1,5 @@
 {
-    "log": "../logs/shepherd.log",
+    "log": "test-logs/shepherd.log",
     "repository": "musthash/fuckyourcode.com",
     "branch": "master",
     "repository-folder": "../public",
