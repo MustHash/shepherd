@@ -20,17 +20,13 @@ nconf.argv()
     });
 
 // Either set log to output to stdout or to a log file
-log = (process.env.NODE_DEBUG) ?
+log = (process.env.NODE_ENV === 'development') ?
         new Log('debug') :
         new Log('notice', (function () {
             // create the file if it doesn't exist
             fsutil.fwrite_p(nconf.get('log'), '');
             return fs.createWriteStream(nconf.get('log'));
         }()));
-
-// Set 'server' name
-exports.title = 'Shepherd';
-
 
 function init() {
     log.notice('Starting shepherd server on port: %s', nconf.get('port'));

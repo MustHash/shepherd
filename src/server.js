@@ -14,7 +14,7 @@ middleware.methodFilter = function (methods) {
     return function (req, resp, next) {
         if (methods.indexOf(req.method) === -1) {
             resp.statusCode = 403;
-            next('ERROR!')
+            next('Forbidden');
         } else { next(); }
     };
 };
@@ -26,14 +26,10 @@ module.exports = function (opts) {
 
     var app = connect()
         .use(connect.logger({ stream: opts.logger }))
+        .use(middleware.methodFilter(opts.methods))
         .use(purgatory(opts.whitelist).bless())
-        .use(middleware.methodFilter(opts.methods || 'POST'))
         .use(connect.bodyParser())
-        .use(function (req, resp, next) {
-            console.log('wtf=>', exports.title)
-            next();
-        })
-        .use(connect.errorHandler({showStack: true}));
+        .use(connect.errorHandler());
 
     return http.createServer(app);
 };
